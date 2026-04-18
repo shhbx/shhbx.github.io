@@ -1,51 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>title</title>
-<style>
-  body{
-    max-width:900px;
-    margin:3rem auto;
-    padding:0 20px;
-    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
-    line-height:1.7;
-    color:#222;
-  }
-  h1{text-align:center; font-size:28px; margin-bottom:10px;}
-  .authors{text-align:center; color:#555; margin-bottom:30px;}
-  .links{text-align:center; margin-bottom:40px;}
-  .links a{
-    margin:0 10px;
-    color:#1a73e8;
-    text-decoration:none;
-  }
-  h2{margin-top:2.5rem; font-size:20px; border-bottom:1px solid #eee; padding-bottom:6px;}
-  .back{margin-bottom:2rem;}
-  .back a{color:#666; text-decoration:none;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multichannel Speech Enhancement with Spatial-Aware Explicit Phase Estimation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.7;
+      color: #334155;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 3.5rem 4rem;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    .back {
+      margin-bottom: 2rem;
+    }
+
+    .back a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .back a:hover {
+      color: #1d4ed8;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #0f172a;
+      text-align: center;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .authors {
+      text-align: center;
+      color: #475569;
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+    }
+
+    .links {
+      text-align: center;
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .links a {
+      display: inline-block;
+      padding: 0.6rem 1.4rem;
+      border-radius: 10px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .links a:nth-child(1) {
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .links a:nth-child(1):hover {
+      background: #15803d;
+    }
+
+    .links a:nth-child(2) {
+      background: #f59e0b;
+      color: #0f172a;
+    }
+
+    .links a:nth-child(2):hover {
+      background: #d97706;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: #1e293b;
+      margin-top: 2.5rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid #2563eb;
+      display: inline-block;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #334155;
+      text-align: justify;
+      margin-bottom: 1rem;
+    }
+
+    /* 对比展示区域 */
+    .sample-section {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .sample-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 1.2rem;
+    }
+
+    /* 信噪比行 */
+    .snr-row {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .snr-title {
+      font-weight: 600;
+      color: #2563eb;
+      margin-bottom: 1rem;
+    }
+
+    /* 模型网格 */
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .model-card {
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .model-name {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #1e293b;
+    }
+
+    .spec-img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      border: 1px solid #e2e8f0;
+    }
+
+    audio {
+      width: 100%;
+      height: 32px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem 1.5rem;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+      .model-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <div class="back"><a href="../">← Back to Homepage</a></div>
+  <div class="container">
+    <div class="back">
+      <a href="../">← Back to Homepage</a>
+    </div>
 
-  <h1>Multichannel Speech Enhancement with Spatial-Aware Explicit Phase Estimation</h1>
-  <div class="authors">Your Name, Others, et al.</div>
+    <h1>Multichannel Speech Enhancement with Spatial-Aware Explicit Phase Estimation</h1>
+    <div class="authors">Hong-Hao Sun, Yang Ai, Hui-Peng Du, Zhen-Hua Ling, and Wu Guo</div>
 
-  <div class="links">
-    <a href="#">Paper</a>
-    <a href="#">Code</a>
+    <div class="links">
+      <a href="#">Paper</a>
+      <a href="#">Code</a>
+    </div>
+
+    <h2>Abstract</h2>
+    <p>Existing neural-network-based multichannel speech enhancement methods often rely on magnitude or real-imaginary modeling, but pay insufficient attention to explicit phase reconstruction and the effective exploitation of the spatial information and inherent geometric diversity of microphone arrays, which limits overall enhancement performance. To address these issues, this paper propose a novel Multichannel Speech Enhancement model with Spatial-Aware explicit Phase Estimation (SAPE-MSE). The SAPE-MSE adopts a magnitude-phase encoder-decoder architecture. The encoder encodes the multichannel degraded magnitude and phase spectra, followed by deep processing with improved time-frequency Transformers. Parallel decoders then estimate the clean magnitude and phase spectra at the reference channel, followed by inverse transformation to reconstruct the clean speech. Importantly, the phase decoding is spatial-aware, guided by spatial cues from inter-channel phase difference features, and explicitly estimates the clean phase spectrum via circular array spatial processing and phase parallel estimation. Experimental results demonstrate that SAPE-MSE outperforms representative multichannel speech enhancement methods on various metrics, achieving a PESQ score of 3.58 on a synthetic eight-channel dataset.</p>
+
+    <h2>Model Comparison</h2>
+
+    <!-- ====================== SAMPLE 1 ====================== -->
+    <div class="sample-section">
+      <div class="sample-title">Sample 1</div>
+
+      <div class="snr-row">
+        <div class="snr-title">SNR = -5 dB</div>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-name">Unprocessed</div>
+            <img src="specs/sample1/-5/unprocessed.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/unprocessed.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Clean</div>
+            <img src="specs/sample1/-5/clean.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/clean.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Oracle MVDR</div>
+            <img src="specs/sample1/-5/mvdr.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/mvdr.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">FasNet-TAC</div>
+            <img src="specs/sample1/-5/fasnet.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/fasnet.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">MIMO-UNet</div>
+            <img src="specs/sample1/-5/mimo.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/mimo.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">EaBNet</div>
+            <img src="specs/sample1/-5/eabnet.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/eabnet.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">McNet</div>
+            <img src="specs/sample1/-5/mcnet.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/mcnet.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Deft-AN</div>
+            <img src="specs/sample1/-5/deftan.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/deftan.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">DeFTAN-II</div>
+            <img src="specs/sample1/-5/deftan2.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/deftan2.wav"></audio>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Ours (SAPE-MSE)</div>
+            <img src="specs/sample1/-5/ours.png" class="spec-img">
+            <audio controls src="audio/sample1/-5/ours.wav"></audio>
+          </div>
+        </div>
+      </div>
+
+      <div class="snr-row">
+        <div class="snr-title">SNR = 0 dB</div>
+        <div class="model-grid">
+          <!-- 结构同上，只需要改路径 -->
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/0/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/0/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/0/clean.png" class="spec-img"><audio controls src="audio/sample1/0/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/0/mvdr.png" class="spec-img"><audio controls src="audio/sample1/0/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/0/fasnet.png" class="spec-img"><audio controls src="audio/sample1/0/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/0/mimo.png" class="spec-img"><audio controls src="audio/sample1/0/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/0/eabnet.png" class="spec-img"><audio controls src="audio/sample1/0/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/0/mcnet.png" class="spec-img"><audio controls src="audio/sample1/0/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/0/deftan.png" class="spec-img"><audio controls src="audio/sample1/0/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/0/deftan2.png" class="spec-img"><audio controls src="audio/sample1/0/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/0/ours.png" class="spec-img"><audio controls src="audio/sample1/0/ours.wav"></audio></div>
+        </div>
+      </div>
+
+      <div class="snr-row">
+        <div class="snr-title">SNR = 5 dB</div>
+        <div class="model-grid">
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/5/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/5/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/5/clean.png" class="spec-img"><audio controls src="audio/sample1/5/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/5/mvdr.png" class="spec-img"><audio controls src="audio/sample1/5/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/5/fasnet.png" class="spec-img"><audio controls src="audio/sample1/5/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/5/mimo.png" class="spec-img"><audio controls src="audio/sample1/5/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/5/eabnet.png" class="spec-img"><audio controls src="audio/sample1/5/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/5/mcnet.png" class="spec-img"><audio controls src="audio/sample1/5/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/5/deftan.png" class="spec-img"><audio controls src="audio/sample1/5/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/5/deftan2.png" class="spec-img"><audio controls src="audio/sample1/5/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/5/ours.png" class="spec-img"><audio controls src="audio/sample1/5/ours.wav"></audio></div>
+        </div>
+      </div>
+
+      <div class="snr-row">
+        <div class="snr-title">SNR = 10 dB</div>
+        <div class="model-grid">
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/10/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/10/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/10/clean.png" class="spec-img"><audio controls src="audio/sample1/10/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/10/mvdr.png" class="spec-img"><audio controls src="audio/sample1/10/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/10/fasnet.png" class="spec-img"><audio controls src="audio/sample1/10/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/10/mimo.png" class="spec-img"><audio controls src="audio/sample1/10/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/10/eabnet.png" class="spec-img"><audio controls src="audio/sample1/10/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/10/mcnet.png" class="spec-img"><audio controls src="audio/sample1/10/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/10/deftan.png" class="spec-img"><audio controls src="audio/sample1/10/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/10/deftan2.png" class="spec-img"><audio controls src="audio/sample1/10/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/10/ours.png" class="spec-img"><audio controls src="audio/sample1/10/ours.wav"></audio></div>
+        </div>
+      </div>
+
+      <div class="snr-row">
+        <div class="snr-title">SNR = 15 dB</div>
+        <div class="model-grid">
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/15/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/15/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/15/clean.png" class="spec-img"><audio controls src="audio/sample1/15/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/15/mvdr.png" class="spec-img"><audio controls src="audio/sample1/15/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/15/fasnet.png" class="spec-img"><audio controls src="audio/sample1/15/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/15/mimo.png" class="spec-img"><audio controls src="audio/sample1/15/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/15/eabnet.png" class="spec-img"><audio controls src="audio/sample1/15/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/15/mcnet.png" class="spec-img"><audio controls src="audio/sample1/15/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/15/deftan.png" class="spec-img"><audio controls src="audio/sample1/15/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/15/deftan2.png" class="spec-img"><audio controls src="audio/sample1/15/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/15/ours.png" class="spec-img"><audio controls src="audio/sample1/15/ours.wav"></audio></div>
+        </div>
+      </div>
+
+      <div class="snr-row">
+        <div class="snr-title">SNR = 20 dB</div>
+        <div class="model-grid">
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/20/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/20/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/20/clean.png" class="spec-img"><audio controls src="audio/sample1/20/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/20/mvdr.png" class="spec-img"><audio controls src="audio/sample1/20/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/20/fasnet.png" class="spec-img"><audio controls src="audio/sample1/20/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/20/mimo.png" class="spec-img"><audio controls src="audio/sample1/20/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/20/eabnet.png" class="spec-img"><audio controls src="audio/sample1/20/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/20/mcnet.png" class="spec-img"><audio controls src="audio/sample1/20/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/20/deftan.png" class="spec-img"><audio controls src="audio/sample1/20/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/20/deftan2.png" class="spec-img"><audio controls src="audio/sample1/20/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/20/ours.png" class="spec-img"><audio controls src="audio/sample1/20/ours.wav"></audio></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================== SAMPLE 2 ~ 5 复制上面整个 sample-section 即可 ====================== -->
+    <div class="sample-section">
+      <div class="sample-title">Sample 2</div>
+      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"><!-- 内容同上 --></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
+    </div>
+
+    <div class="sample-section">
+      <div class="sample-title">Sample 3</div>
+      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
+    </div>
+
+    <div class="sample-section">
+      <div class="sample-title">Sample 4</div>
+      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
+    </div>
+
+    <div class="sample-section">
+      <div class="sample-title">Sample 5</div>
+      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
+    </div>
+
   </div>
-
-  <h2>Abstract</h2>
-  <p>Existing neural-network-based multichannel speech enhancement methods often rely on magnitude or real-imaginary modeling, but pay insufficient attention to explicit phase reconstruction and the effective exploitation of the spatial information and inherent geometric diversity of microphone arrays, which limits overall enhancement performance.
-To address these issues, this paper propose a novel Multichannel Speech Enhancement model with Spatial-Aware explicit Phase Estimation (SAPE-MSE). The SAPE-MSE adopts a magnitude-phase encoder-decoder architecture.
-The encoder encodes the multichannel degraded magnitude and phase spectra, followed by deep processing with improved time-frequency Transformers. 
-Parallel decoders then estimate the clean magnitude and phase spectra at the reference channel, followed by inverse transformation to reconstruct the clean speech. 
-Importantly, the phase decoding is spatial-aware, guided by spatial cues from inter-channel phase difference features, and explicitly estimates the clean phase spectrum via circular array spatial processing and phase parallel estimation. 
-Experimental results demonstrate that SAPE-MSE outperforms representative multichannel speech enhancement methods on various metrics, achieving a PESQ score of 3.58 on a synthetic eight-channel dataset.</p>
-
-  <h2>Comparison</h2>
-  <p>Coming soon.</p>
 </body>
 </html>
