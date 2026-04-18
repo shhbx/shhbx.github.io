@@ -35,7 +35,9 @@ h1 {
 
 .authors {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #475569;
 }
 
 .links {
@@ -57,6 +59,14 @@ h1 {
 h2 {
   text-align: center;
   margin: 30px 0 10px;
+}
+
+.abstract {
+  max-width: 900px;
+  margin: auto;
+  text-align: justify;
+  margin-bottom: 30px;
+  color: #334155;
 }
 
 .sample-section {
@@ -113,16 +123,29 @@ audio {
 <div class="container">
 
 <h1>Multichannel Speech Enhancement with Spatial-Aware Explicit Phase Estimation</h1>
-<div class="authors">Hong-Hao Sun et al.</div>
+
+<div class="authors">
+  Hong-Hao Sun, Yang Ai, Hui-Peng Du, Zhen-Hua Ling, and Wu Guo
+</div>
 
 <div class="links">
   <a href="#">Paper</a>
   <a href="#">Code</a>
 </div>
 
+<h2>Abstract</h2>
+<div class="abstract">
+Existing neural-network-based multichannel speech enhancement methods often rely on magnitude or real-imaginary modeling, but pay insufficient attention to explicit phase reconstruction and the effective exploitation of spatial information and geometric diversity of microphone arrays, which limits overall enhancement performance. 
+To address these issues, we propose a novel Multichannel Speech Enhancement model with Spatial-Aware Explicit Phase Estimation (SAPE-MSE). 
+The model adopts a magnitude-phase encoder-decoder architecture, where multichannel degraded magnitude and phase spectra are encoded and processed using improved time-frequency Transformers. 
+Parallel decoders estimate clean magnitude and phase spectra at the reference channel, followed by inverse transformation to reconstruct clean speech. 
+Importantly, the phase decoding is spatial-aware, guided by inter-channel phase difference features and circular array spatial processing. 
+Experimental results demonstrate that SAPE-MSE outperforms representative multichannel speech enhancement methods, achieving superior PESQ performance on an eight-channel synthetic dataset.
+</div>
+
 <h2>Model Comparison</h2>
 
-<!-- 只保留一个容器 -->
+<!-- 自动生成 -->
 <div id="samples"></div>
 
 </div>
@@ -145,7 +168,7 @@ const models = [
   ["ours","Ours (SAPE-MSE)"]
 ];
 
-// ===== 生成函数 =====
+// ===== 生成 =====
 const root = document.getElementById("samples");
 
 samples.forEach((sample, sIdx) => {
