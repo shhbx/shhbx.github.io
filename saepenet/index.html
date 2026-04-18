@@ -1,430 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Multichannel Speech Enhancement with Spatial-Aware Explicit Phase Estimation</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Multichannel Speech Enhancement with Spatial-Aware Explicit Phase Estimation</title>
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      line-height: 1.7;
-      color: #334155;
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      padding: 2rem 1rem;
-      min-height: 100vh;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    .container {
-      max-width: 1600px;
-      margin: 0 auto;
-      background: #ffffff;
-      padding: 3.5rem 4rem;
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-      transition: all 0.3s ease;
-    }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+  line-height: 1.7;
+  color: #334155;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2rem 1rem;
+}
 
-    .back {
-      margin-bottom: 2rem;
-    }
+.container {
+  max-width: 1600px;
+  margin: auto;
+  background: #fff;
+  padding: 3rem;
+  border-radius: 20px;
+}
 
-    .back a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
 
-    .back a:hover {
-      color: #1d4ed8;
-    }
+.authors {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    h1 {
-      font-size: 2rem;
-      color: #0f172a;
-      text-align: center;
-      margin-bottom: 1rem;
-      line-height: 1.4;
-      font-weight: 700;
-    }
+.links {
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-    .authors {
-      text-align: center;
-      color: #475569;
-      margin-bottom: 1.5rem;
-      font-size: 1.1rem;
-    }
+.links a {
+  margin: 0 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+}
 
-    .links {
-      text-align: center;
-      margin-bottom: 3rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
+.links a:nth-child(1){ background:#16a34a;}
+.links a:nth-child(2){ background:#f59e0b; color:#000;}
 
-    .links a {
-      display: inline-block;
-      padding: 0.6rem 1.4rem;
-      border-radius: 10px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.25s ease;
-    }
+h2 {
+  text-align: center;
+  margin: 30px 0 10px;
+}
 
-    .links a:nth-child(1) {
-      background: #16a34a;
-      color: #fff;
-    }
+.sample-section {
+  margin-top: 30px;
+  padding: 15px;
+  border-radius: 12px;
+}
 
-    .links a:nth-child(1):hover {
-      background: #15803d;
-    }
+.sample-section:nth-child(odd){background:#f8fafc;}
+.sample-section:nth-child(even){background:#eff6ff;}
 
-    .links a:nth-child(2) {
-      background: #f59e0b;
-      color: #0f172a;
-    }
+.sample-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
 
-    .links a:nth-child(2):hover {
-      background: #d97706;
-    }
+.snr-row {
+  margin-bottom: 25px;
+  border-bottom: 1px dashed #ccc;
+}
 
-    /* 1. 标题居中 */
-    h2 {
-      font-size: 1.4rem;
-      color: #1e293b;
-      margin-top: 2.5rem;
-      margin-bottom: 1.2rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 2px solid #2563eb;
-      font-weight: 600;
-      text-align: center;
-      display: block;
-      width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
-    }
+.snr-title {
+  display:inline-block;
+  margin-bottom:10px;
+  padding:5px 10px;
+  background:#dbeafe;
+  border-radius:6px;
+}
 
-    p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #334155;
-      text-align: justify;
-      margin-bottom: 1rem;
-    }
+.model-grid {
+  display:grid;
+  grid-template-columns: repeat(5,1fr);
+  gap:10px;
+}
 
-    .sample-section {
-      margin-top: 2.5rem;
-      padding: 1.5rem;
-      border-radius: 16px;
-    }
+.model-card {
+  text-align:center;
+  font-size:13px;
+}
 
-    /* 不同 Sample 不同背景色 */
-    .sample-section:nth-child(odd) {
-      background-color: #f8fafc;
-    }
-    .sample-section:nth-child(even) {
-      background-color: #eff6ff;
-    }
+.spec-img {
+  width:100%;
+  border-radius:5px;
+}
 
-    .sample-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #1e293b;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-
-    .snr-row {
-      margin-bottom: 2.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px dashed #cbd5e1;
-    }
-
-    /* 信噪比左对齐 + 不同 SNR 不同颜色 */
-    .snr-title {
-      font-weight: 600;
-      margin-bottom: 1.2rem;
-      font-size: 1.05rem;
-      text-align: left;
-      padding: 6px 12px;
-      border-radius: 8px;
-      display: inline-block;
-    }
-
-    .snr-row:nth-of-type(6n+1) .snr-title { background: #dbeafe; color: #1e40af; }
-    .snr-row:nth-of-type(6n+2) .snr-title { background: #e0e7ff; color: #3730a3; }
-    .snr-row:nth-of-type(6n+3) .snr-title { background: #ddd6fe; color: #5b21b6; }
-    .snr-row:nth-of-type(6n+4) .snr-title { background: #f5d0fe; color: #861984; }
-    .snr-row:nth-of-type(6n+5) .snr-title { background: #fce7f3; color: #be123c; }
-    .snr-row:nth-of-type(6n+6) .snr-title { background: #ffefef; color: #9f1239; }
-
-    /* 2. 模型两行布局：5个一行，共2行 */
-    .model-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 1rem;
-      row-gap: 1.5rem;
-    }
-
-    .model-card {
-      text-align: center;
-      font-size: 0.85rem;
-    }
-
-    .model-name {
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: #1e293b;
-      white-space: nowrap;
-    }
-
-    .spec-img {
-      width: 100%;
-      height: auto;
-      border-radius: 6px;
-      margin-bottom: 0.5rem;
-      border: 1px solid #e2e8f0;
-    }
-
-    audio {
-      width: 100%;
-      height: 32px;
-    }
-
-    @media (max-width: 1080px) {
-      .model-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 2rem 1rem;
-      }
-      h1 {
-        font-size: 1.4rem;
-      }
-      .model-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  </style>
+audio {
+  width:100%;
+}
+</style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="back">
-      <a href="../">← Back to Homepage</a>
-    </div>
+<div class="container">
 
-    <h1>Multichannel Speech Enhancement with Spatial-Aware Explicit Phase Estimation</h1>
-    <div class="authors">Hong-Hao Sun, Yang Ai, Hui-Peng Du, Zhen-Hua Ling, and Wu Guo</div>
+<h1>Multichannel Speech Enhancement with Spatial-Aware Explicit Phase Estimation</h1>
+<div class="authors">Hong-Hao Sun et al.</div>
 
-    <div class="links">
-      <a href="#">Paper</a>
-      <a href="#">Code</a>
-    </div>
+<div class="links">
+  <a href="#">Paper</a>
+  <a href="#">Code</a>
+</div>
 
-    <h2>Abstract</h2>
-    <p>Existing neural-network-based multichannel speech enhancement methods often rely on magnitude or real-imaginary modeling, but pay insufficient attention to explicit phase reconstruction and the effective exploitation of the spatial information and inherent geometric diversity of microphone arrays, which limits overall enhancement performance. To address these issues, this paper propose a novel Multichannel Speech Enhancement model with Spatial-Aware explicit Phase Estimation (SAPE-MSE). The SAPE-MSE adopts a magnitude-phase encoder-decoder architecture. The encoder encodes the multichannel degraded magnitude and phase spectra, followed by deep processing with improved time-frequency Transformers. Parallel decoders then estimate the clean magnitude and phase spectra at the reference channel, followed by inverse transformation to reconstruct the clean speech. Importantly, the phase decoding is spatial-aware, guided by spatial cues from inter-channel phase difference features, and explicitly estimates the clean phase spectrum via circular array spatial processing and phase parallel estimation. Experimental results demonstrate that SAPE-MSE outperforms representative multichannel speech enhancement methods on various metrics, achieving a PESQ score of 3.58 on a synthetic eight-channel dataset.</p>
+<h2>Model Comparison</h2>
 
-    <h2>Model Comparison</h2>
+<!-- 只保留一个容器 -->
+<div id="samples"></div>
 
-    <!-- Sample 1 -->
-    <div class="sample-section">
-      <div class="sample-title">Sample 1</div>
+</div>
 
-      <div class="snr-row">
-        <div class="snr-title">SNR = -5 dB</div>
-        <div class="model-grid">
-          <div class="model-card">
-            <div class="model-name">Unprocessed</div>
-            <img src="specs/sample1/-5/unprocessed.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/unprocessed.wav"></audio>
-          </div>
-          <div class="model-card">
-            <div class="model-name">Clean</div>
-            <img src="specs/sample1/-5/clean.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/clean.wav"></audio>
-          </div>
-          <div class="model-card">
-            <div class="model-name">Oracle MVDR</div>
-            <img src="specs/sample1/-5/mvdr.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/mvdr.wav"></audio>
-          </div>
-          <div class="model-card">
-            <div class="model-name">FasNet-TAC</div>
-            <img src="specs/sample1/-5/fasnet.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/fasnet.wav"></audio>
-          </div>
-          <div class="model-card">
-            <div class="model-name">MIMO-UNet</div>
-            <img src="specs/sample1/-5/mimo.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/mimo.wav"></audio>
-          </div>
+<script>
+// ===== 数据配置 =====
+const samples = ["sample1","sample2","sample3"];
+const snrs = ["-5","0","5","10","15","20"];
 
-          <div class="model-card">
-            <div class="model-name">EaBNet</div>
-            <img src="specs/sample1/-5/eabnet.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/eabnet.wav"></audio>
-          </div>
-          <div class="model-card">
-            <div class="model-name">McNet</div>
-            <img src="specs/sample1/-5/mcnet.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/mcnet.wav"></audio>
-          </div>
-          <div class="model-card">
-            <div class="model-name">Deft-AN</div>
-            <img src="specs/sample1/-5/deftan.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/deftan.wav"></audio>
-          </div>
-          <div class="model-card">
-            <div class="model-name">DeFTAN-II</div>
-            <img src="specs/sample1/-5/deftan2.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/deftan2.wav"></audio>
-          </div>
-          <div class="model-card">
-            <div class="model-name">Ours (SAPE-MSE)</div>
-            <img src="specs/sample1/-5/ours.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/ours.wav"></audio>
-          </div>
-        </div>
-      </div>
+const models = [
+  ["unprocessed","Unprocessed"],
+  ["clean","Clean"],
+  ["mvdr","Oracle MVDR"],
+  ["fasnet","FasNet-TAC"],
+  ["mimo","MIMO-UNet"],
+  ["eabnet","EaBNet"],
+  ["mcnet","McNet"],
+  ["deftan","Deft-AN"],
+  ["deftan2","DeFTAN-II"],
+  ["ours","Ours (SAPE-MSE)"]
+];
 
-      <div class="snr-row">
-        <div class="snr-title">SNR = 0 dB</div>
-        <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/0/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/0/unprocessed.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/0/clean.png" class="spec-img"><audio controls src="audio/sample1/0/clean.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/0/mvdr.png" class="spec-img"><audio controls src="audio/sample1/0/mvdr.wav"></audio></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/0/fasnet.png" class="spec-img"><audio controls src="audio/sample1/0/fasnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/0/mimo.png" class="spec-img"><audio controls src="audio/sample1/0/mimo.wav"></audio></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/0/eabnet.png" class="spec-img"><audio controls src="audio/sample1/0/eabnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/0/mcnet.png" class="spec-img"><audio controls src="audio/sample1/0/mcnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/0/deftan.png" class="spec-img"><audio controls src="audio/sample1/0/deftan.wav"></audio></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/0/deftan2.png" class="spec-img"><audio controls src="audio/sample1/0/deftan2.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/0/ours.png" class="spec-img"><audio controls src="audio/sample1/0/ours.wav"></audio></div>
-        </div>
-      </div>
+// ===== 生成函数 =====
+const root = document.getElementById("samples");
 
-      <div class="snr-row">
-        <div class="snr-title">SNR = 5 dB</div>
-        <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/5/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/5/unprocessed.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/5/clean.png" class="spec-img"><audio controls src="audio/sample1/5/clean.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/5/mvdr.png" class="spec-img"><audio controls src="audio/sample1/5/mvdr.wav"></audio></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/5/fasnet.png" class="spec-img"><audio controls src="audio/sample1/5/fasnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/5/mimo.png" class="spec-img"><audio controls src="audio/sample1/5/mimo.wav"></audio></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/5/eabnet.png" class="spec-img"><audio controls src="audio/sample1/5/eabnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/5/mcnet.png" class="spec-img"><audio controls src="audio/sample1/5/mcnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/5/deftan.png" class="spec-img"><audio controls src="audio/sample1/5/deftan.wav"></audio></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/5/deftan2.png" class="spec-img"><audio controls src="audio/sample1/5/deftan2.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/5/ours.png" class="spec-img"><audio controls src="audio/sample1/5/ours.wav"></audio></div>
-        </div>
-      </div>
+samples.forEach((sample, sIdx) => {
 
-      <div class="snr-row">
-        <div class="snr-title">SNR = 10 dB</div>
-        <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/10/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/10/unprocessed.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/10/clean.png" class="spec-img"><audio controls src="audio/sample1/10/clean.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/10/mvdr.png" class="spec-img"><audio controls src="audio/sample1/10/mvdr.wav"></audio></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/10/fasnet.png" class="spec-img"><audio controls src="audio/sample1/10/fasnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/10/mimo.png" class="spec-img"><audio controls src="audio/sample1/10/mimo.wav"></audio></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/10/eabnet.png" class="spec-img"><audio controls src="audio/sample1/10/eabnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/10/mcnet.png" class="spec-img"><audio controls src="audio/sample1/10/mcnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/10/deftan.png" class="spec-img"><audio controls src="audio/sample1/10/deftan.wav"></audio></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/10/deftan2.png" class="spec-img"><audio controls src="audio/sample1/10/deftan2.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/10/ours.png" class="spec-img"><audio controls src="audio/sample1/10/ours.wav"></audio></div>
-        </div>
-      </div>
+  const section = document.createElement("div");
+  section.className = "sample-section";
 
-      <div class="snr-row">
-        <div class="snr-title">SNR = 15 dB</div>
-        <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/15/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/15/unprocessed.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/15/clean.png" class="spec-img"><audio controls src="audio/sample1/15/clean.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/15/mvdr.png" class="spec-img"><audio controls src="audio/sample1/15/mvdr.wav"></audio></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/15/fasnet.png" class="spec-img"><audio controls src="audio/sample1/15/fasnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/15/mimo.png" class="spec-img"><audio controls src="audio/sample1/15/mimo.wav"></audio></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/15/eabnet.png" class="spec-img"><audio controls src="audio/sample1/15/eabnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/15/mcnet.png" class="spec-img"><audio controls src="audio/sample1/15/mcnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/15/deftan.png" class="spec-img"><audio controls src="audio/sample1/15/deftan.wav"></audio></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/15/deftan2.png" class="spec-img"><audio controls src="audio/sample1/15/deftan2.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/15/ours.png" class="spec-img"><audio controls src="audio/sample1/15/ours.wav"></audio></div>
-        </div>
-      </div>
+  section.innerHTML = `<div class="sample-title">Sample ${sIdx+1}</div>`;
 
-      <div class="snr-row">
-        <div class="snr-title">SNR = 20 dB</div>
-        <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/20/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/20/unprocessed.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/20/clean.png" class="spec-img"><audio controls src="audio/sample1/20/clean.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/20/mvdr.png" class="spec-img"><audio controls src="audio/sample1/20/mvdr.wav"></audio></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/20/fasnet.png" class="spec-img"><audio controls src="audio/sample1/20/fasnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/20/mimo.png" class="spec-img"><audio controls src="audio/sample1/20/mimo.wav"></audio></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/20/eabnet.png" class="spec-img"><audio controls src="audio/sample1/20/eabnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/20/mcnet.png" class="spec-img"><audio controls src="audio/sample1/20/mcnet.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/20/deftan.png" class="spec-img"><audio controls src="audio/sample1/20/deftan.wav"></audio></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/20/deftan2.png" class="spec-img"><audio controls src="audio/sample1/20/deftan2.wav"></audio></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/20/ours.png" class="spec-img"><audio controls src="audio/sample1/20/ours.wav"></audio></div>
-        </div>
-      </div>
-    </div>
+  snrs.forEach(snr => {
 
-    <!-- Sample 2 -->
-    <div class="sample-section">
-      <div class="sample-title">Sample 2</div>
-      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
-    </div>
+    const row = document.createElement("div");
+    row.className = "snr-row";
 
-    <!-- Sample 3 -->
-    <div class="sample-section">
-      <div class="sample-title">Sample 3</div>
-      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
-    </div>
+    row.innerHTML += `<div class="snr-title">SNR = ${snr} dB</div>`;
 
-    <!-- Sample 4 -->
-    <div class="sample-section">
-      <div class="sample-title">Sample 4</div>
-      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
-    </div>
+    const grid = document.createElement("div");
+    grid.className = "model-grid";
 
-    <!-- Sample 5 -->
-    <div class="sample-section">
-      <div class="sample-title">Sample 5</div>
-      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
-      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
-    </div>
+    models.forEach(([key,name]) => {
 
-  </div>
+      const card = document.createElement("div");
+      card.className = "model-card";
+
+      card.innerHTML = `
+        <div>${name}</div>
+        <img src="specs/${sample}/${snr}/${key}.png" class="spec-img"
+             onerror="this.style.display='none'">
+        <audio controls src="audio/${sample}/${snr}/${key}.wav"></audio>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    row.appendChild(grid);
+    section.appendChild(row);
+  });
+
+  root.appendChild(section);
+});
+</script>
+
 </body>
 </html>
