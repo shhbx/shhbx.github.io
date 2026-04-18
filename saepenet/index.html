@@ -20,7 +20,6 @@
       min-height: 100vh;
     }
 
-    /* 加宽容器 */
     .container {
       max-width: 1400px;
       margin: 0 auto;
@@ -65,7 +64,6 @@
     .links {
       text-align: center;
       margin-bottom: 3rem;
-      display:rem;
       display: flex;
       justify-content: center;
       gap: 1rem;
@@ -99,6 +97,7 @@
       background: #d97706;
     }
 
+    /* 1. 标题居中 */
     h2 {
       font-size: 1.4rem;
       color: #1e293b;
@@ -106,8 +105,12 @@
       margin-bottom: 1.2rem;
       padding-bottom: 0.6rem;
       border-bottom: 2px solid #2563eb;
-      display: inline-block;
       font-weight: 600;
+      text-align: center;
+      display: block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     p {
@@ -120,8 +123,16 @@
 
     .sample-section {
       margin-top: 2.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid #e2e8f0;
+      padding: 1.5rem;
+      border-radius: 16px;
+    }
+
+    /* 不同 Sample 不同背景色 */
+    .sample-section:nth-child(odd) {
+      background-color: #f8fafc;
+    }
+    .sample-section:nth-child(even) {
+      background-color: #eff6ff;
     }
 
     .sample-title {
@@ -129,26 +140,39 @@
       font-weight: 600;
       color: #1e293b;
       margin-bottom: 1.5rem;
+      text-align: center;
     }
 
     .snr-row {
       margin-bottom: 2.5rem;
       padding-bottom: 1.5rem;
-      border-bottom: 1px dashed #e2e8f0;
+      border-bottom: 1px dashed #cbd5e1;
     }
 
+    /* 信噪比左对齐 + 不同 SNR 不同颜色 */
     .snr-title {
       font-weight: 600;
-      color: #2563eb;
       margin-bottom: 1.2rem;
       font-size: 1.05rem;
+      text-align: left;
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: inline-block;
     }
 
-    /* 加宽网格，缩小最小宽度，一行放下全部10个模型 */
+    .snr-row:nth-of-type(6n+1) .snr-title { background: #dbeafe; color: #1e40af; }
+    .snr-row:nth-of-type(6n+2) .snr-title { background: #e0e7ff; color: #3730a3; }
+    .snr-row:nth-of-type(6n+3) .snr-title { background: #ddd6fe; color: #5b21b6; }
+    .snr-row:nth-of-type(6n+4) .snr-title { background: #f5d0fe; color: #861984; }
+    .snr-row:nth-of-type(6n+5) .snr-title { background: #fce7f3; color: #be123c; }
+    .snr-row:nth-of-type(6n+6) .snr-title { background: #ffefef; color: #9f1239; }
+
+    /* 2. 模型两行布局：5个一行，共2行 */
     .model-grid {
       display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 0.8rem;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      row-gap: 1.5rem;
     }
 
     .model-card {
@@ -178,7 +202,7 @@
 
     @media (max-width: 1080px) {
       .model-grid {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(3, 1fr);
       }
     }
 
@@ -190,7 +214,7 @@
         font-size: 1.4rem;
       }
       .model-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -225,52 +249,53 @@
           <div class="model-card">
             <div class="model-name">Unprocessed</div>
             <img src="specs/sample1/-5/unprocessed.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/unprocessed.wav">
+            <audio controls src="audio/sample1/-5/unprocessed.wav"></audio>
           </div>
           <div class="model-card">
             <div class="model-name">Clean</div>
             <img src="specs/sample1/-5/clean.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/clean.wav">
+            <audio controls src="audio/sample1/-5/clean.wav"></audio>
           </div>
           <div class="model-card">
             <div class="model-name">Oracle MVDR</div>
             <img src="specs/sample1/-5/mvdr.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/mvdr.wav">
+            <audio controls src="audio/sample1/-5/mvdr.wav"></audio>
           </div>
           <div class="model-card">
             <div class="model-name">FasNet-TAC</div>
             <img src="specs/sample1/-5/fasnet.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/fasnet.wav">
+            <audio controls src="audio/sample1/-5/fasnet.wav"></audio>
           </div>
           <div class="model-card">
             <div class="model-name">MIMO-UNet</div>
             <img src="specs/sample1/-5/mimo.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/mimo.wav">
+            <audio controls src="audio/sample1/-5/mimo.wav"></audio>
           </div>
+
           <div class="model-card">
             <div class="model-name">EaBNet</div>
             <img src="specs/sample1/-5/eabnet.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/eabnet.wav">
+            <audio controls src="audio/sample1/-5/eabnet.wav"></audio>
           </div>
           <div class="model-card">
             <div class="model-name">McNet</div>
             <img src="specs/sample1/-5/mcnet.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/mcnet.wav">
+            <audio controls src="audio/sample1/-5/mcnet.wav"></audio>
           </div>
           <div class="model-card">
             <div class="model-name">Deft-AN</div>
             <img src="specs/sample1/-5/deftan.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/deftan.wav">
+            <audio controls src="audio/sample1/-5/deftan.wav"></audio>
           </div>
           <div class="model-card">
             <div class="model-name">DeFTAN-II</div>
             <img src="specs/sample1/-5/deftan2.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/deftan2.wav">
+            <audio controls src="audio/sample1/-5/deftan2.wav"></audio>
           </div>
           <div class="model-card">
             <div class="model-name">Ours (SAPE-MSE)</div>
             <img src="specs/sample1/-5/ours.png" class="spec-img">
-            <audio controls src="audio/sample1/-5/ours.wav">
+            <audio controls src="audio/sample1/-5/ours.wav"></audio>
           </div>
         </div>
       </div>
@@ -278,92 +303,127 @@
       <div class="snr-row">
         <div class="snr-title">SNR = 0 dB</div>
         <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/0/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/0/unprocessed.wav"></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/0/clean.png" class="spec-img"><audio controls src="audio/sample1/0/clean.wav"></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/0/mvdr.png" class="spec-img"><audio controls src="audio/sample1/0/mvdr.wav"></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/0/fasnet.png" class="spec-img"><audio controls src="audio/sample1/0/fasnet.wav"></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/0/mimo.png" class="spec-img"><audio controls src="audio/sample1/0/mimo.wav"></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/0/eabnet.png" class="spec-img"><audio controls src="audio/sample1/0/eabnet.wav"></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/0/mcnet.png" class="spec-img"><audio controls src="audio/sample1/0/mcnet.wav"></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/0/deftan.png" class="spec-img"><audio controls src="audio/sample1/0/deftan.wav"></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/0/deftan2.png" class="spec-img"><audio controls src="audio/sample1/0/deftan2.wav"></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/0/ours.png" class="spec-img"><audio controls src="audio/sample1/0/ours.wav"></div>
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/0/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/0/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/0/clean.png" class="spec-img"><audio controls src="audio/sample1/0/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/0/mvdr.png" class="spec-img"><audio controls src="audio/sample1/0/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/0/fasnet.png" class="spec-img"><audio controls src="audio/sample1/0/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/0/mimo.png" class="spec-img"><audio controls src="audio/sample1/0/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/0/eabnet.png" class="spec-img"><audio controls src="audio/sample1/0/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/0/mcnet.png" class="spec-img"><audio controls src="audio/sample1/0/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/0/deftan.png" class="spec-img"><audio controls src="audio/sample1/0/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/0/deftan2.png" class="spec-img"><audio controls src="audio/sample1/0/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/0/ours.png" class="spec-img"><audio controls src="audio/sample1/0/ours.wav"></audio></div>
         </div>
       </div>
 
       <div class="snr-row">
         <div class="snr-title">SNR = 5 dB</div>
         <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/5/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/5/unprocessed.wav"></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/5/clean.png" class="spec-img"><audio controls src="audio/sample1/5/clean.wav"></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/5/mvdr.png" class="spec-img"><audio controls src="audio/sample1/5/mvdr.wav"></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/5/fasnet.png" class="spec-img"><audio controls src="audio/sample1/5/fasnet.wav"></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/5/mimo.png" class="spec-img"><audio controls src="audio/sample1/5/mimo.wav"></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/5/eabnet.png" class="spec-img"><audio controls src="audio/sample1/5/eabnet.wav"></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/5/mcnet.png" class="spec-img"><audio controls src="audio/sample1/5/mcnet.wav"></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/5/deftan.png" class="spec-img"><audio controls src="audio/sample1/5/deftan.wav"></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/5/deftan2.png" class="spec-img"><audio controls src="audio/sample1/5/deftan2.wav"></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/5/ours.png" class="spec-img"><audio controls src="audio/sample1/5/ours.wav"></div>
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/5/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/5/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/5/clean.png" class="spec-img"><audio controls src="audio/sample1/5/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/5/mvdr.png" class="spec-img"><audio controls src="audio/sample1/5/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/5/fasnet.png" class="spec-img"><audio controls src="audio/sample1/5/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/5/mimo.png" class="spec-img"><audio controls src="audio/sample1/5/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/5/eabnet.png" class="spec-img"><audio controls src="audio/sample1/5/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/5/mcnet.png" class="spec-img"><audio controls src="audio/sample1/5/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/5/deftan.png" class="spec-img"><audio controls src="audio/sample1/5/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/5/deftan2.png" class="spec-img"><audio controls src="audio/sample1/5/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/5/ours.png" class="spec-img"><audio controls src="audio/sample1/5/ours.wav"></audio></div>
         </div>
       </div>
 
       <div class="snr-row">
         <div class="snr-title">SNR = 10 dB</div>
         <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/10/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/10/unprocessed.wav"></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/10/clean.png" class="spec-img"><audio controls src="audio/sample1/10/clean.wav"></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/10/mvdr.png" class="spec-img"><audio controls src="audio/sample1/10/mvdr.wav"></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/10/fasnet.png" class="spec-img"><audio controls src="audio/sample1/10/fasnet.wav"></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/10/mimo.png" class="spec-img"><audio controls src="audio/sample1/10/mimo.wav"></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/10/eabnet.png" class="spec-img"><audio controls src="audio/sample1/10/eabnet.wav"></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/10/mcnet.png" class="spec-img"><audio controls src="audio/sample1/10/mcnet.wav"></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/10/deftan.png" class="spec-img"><audio controls src="audio/sample1/10/deftan.wav"></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/10/deftan2.png" class="spec-img"><audio controls src="audio/sample1/10/deftan2.wav"></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/10/ours.png" class="spec-img"><audio controls src="audio/sample1/10/ours.wav"></div>
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/10/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/10/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/10/clean.png" class="spec-img"><audio controls src="audio/sample1/10/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/10/mvdr.png" class="spec-img"><audio controls src="audio/sample1/10/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/10/fasnet.png" class="spec-img"><audio controls src="audio/sample1/10/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/10/mimo.png" class="spec-img"><audio controls src="audio/sample1/10/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/10/eabnet.png" class="spec-img"><audio controls src="audio/sample1/10/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/10/mcnet.png" class="spec-img"><audio controls src="audio/sample1/10/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/10/deftan.png" class="spec-img"><audio controls src="audio/sample1/10/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/10/deftan2.png" class="spec-img"><audio controls src="audio/sample1/10/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/10/ours.png" class="spec-img"><audio controls src="audio/sample1/10/ours.wav"></audio></div>
         </div>
       </div>
 
       <div class="snr-row">
         <div class="snr-title">SNR = 15 dB</div>
         <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/15/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/15/unprocessed.wav"></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/15/clean.png" class="spec-img"><audio controls src="audio/sample1/15/clean.wav"></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/15/mvdr.png" class="spec-img"><audio controls src="audio/sample1/15/mvdr.wav"></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/15/fasnet.png" class="spec-img"><audio controls src="audio/sample1/15/fasnet.wav"></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/15/mimo.png" class="spec-img"><audio controls src="audio/sample1/15/mimo.wav"></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/15/eabnet.png" class="spec-img"><audio controls src="audio/sample1/15/eabnet.wav"></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/15/mcnet.png" class="spec-img"><audio controls src="audio/sample1/15/mcnet.wav"></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/15/deftan.png" class="spec-img"><audio controls src="audio/sample1/15/deftan.wav"></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/15/deftan2.png" class="spec-img"><audio controls src="audio/sample1/15/deftan2.wav"></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/15/ours.png" class="spec-img"><audio controls src="audio/sample1/15/ours.wav"></div>
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/15/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/15/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/15/clean.png" class="spec-img"><audio controls src="audio/sample1/15/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/15/mvdr.png" class="spec-img"><audio controls src="audio/sample1/15/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/15/fasnet.png" class="spec-img"><audio controls src="audio/sample1/15/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/15/mimo.png" class="spec-img"><audio controls src="audio/sample1/15/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/15/eabnet.png" class="spec-img"><audio controls src="audio/sample1/15/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/15/mcnet.png" class="spec-img"><audio controls src="audio/sample1/15/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/15/deftan.png" class="spec-img"><audio controls src="audio/sample1/15/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/15/deftan2.png" class="spec-img"><audio controls src="audio/sample1/15/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/15/ours.png" class="spec-img"><audio controls src="audio/sample1/15/ours.wav"></audio></div>
         </div>
       </div>
 
       <div class="snr-row">
         <div class="snr-title">SNR = 20 dB</div>
         <div class="model-grid">
-          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/20/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/20/unprocessed.wav"></div>
-          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/20/clean.png" class="spec-img"><audio controls src="audio/sample1/20/clean.wav"></div>
-          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/20/mvdr.png" class="spec-img"><audio controls src="audio/sample1/20/mvdr.wav"></div>
-          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/20/fasnet.png" class="spec-img"><audio controls src="audio/sample1/20/fasnet.wav"></div>
-          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/20/mimo.png" class="spec-img"><audio controls src="audio/sample1/20/mimo.wav"></div>
-          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/20/eabnet.png" class="spec-img"><audio controls src="audio/sample1/20/eabnet.wav"></div>
-          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/20/mcnet.png" class="spec-img"><audio controls src="audio/sample1/20/mcnet.wav"></div>
-          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/20/deftan.png" class="spec-img"><audio controls src="audio/sample1/20/deftan.wav"></div>
-          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/20/deftan2.png" class="spec-img"><audio controls src="audio/sample1/20/deftan2.wav"></div>
-          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/20/ours.png" class="spec-img"><audio controls src="audio/sample1/20/ours.wav"></div>
+          <div class="model-card"><div class="model-name">Unprocessed</div><img src="specs/sample1/20/unprocessed.png" class="spec-img"><audio controls src="audio/sample1/20/unprocessed.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Clean</div><img src="specs/sample1/20/clean.png" class="spec-img"><audio controls src="audio/sample1/20/clean.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Oracle MVDR</div><img src="specs/sample1/20/mvdr.png" class="spec-img"><audio controls src="audio/sample1/20/mvdr.wav"></audio></div>
+          <div class="model-card"><div class="model-name">FasNet-TAC</div><img src="specs/sample1/20/fasnet.png" class="spec-img"><audio controls src="audio/sample1/20/fasnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">MIMO-UNet</div><img src="specs/sample1/20/mimo.png" class="spec-img"><audio controls src="audio/sample1/20/mimo.wav"></audio></div>
+          <div class="model-card"><div class="model-name">EaBNet</div><img src="specs/sample1/20/eabnet.png" class="spec-img"><audio controls src="audio/sample1/20/eabnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">McNet</div><img src="specs/sample1/20/mcnet.png" class="spec-img"><audio controls src="audio/sample1/20/mcnet.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Deft-AN</div><img src="specs/sample1/20/deftan.png" class="spec-img"><audio controls src="audio/sample1/20/deftan.wav"></audio></div>
+          <div class="model-card"><div class="model-name">DeFTAN-II</div><img src="specs/sample1/20/deftan2.png" class="spec-img"><audio controls src="audio/sample1/20/deftan2.wav"></audio></div>
+          <div class="model-card"><div class="model-name">Ours (SAPE-MSE)</div><img src="specs/sample1/20/ours.png" class="spec-img"><audio controls src="audio/sample1/20/ours.wav"></audio></div>
         </div>
       </div>
     </div>
 
     <!-- Sample 2 -->
-    <div class="sample-section"><div class="sample-title">Sample 2</div></div>
+    <div class="sample-section">
+      <div class="sample-title">Sample 2</div>
+      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
+    </div>
+
     <!-- Sample 3 -->
-    <div class="sample-section"><div class="sample-title">Sample 3</div></div>
+    <div class="sample-section">
+      <div class="sample-title">Sample 3</div>
+      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
+    </div>
+
     <!-- Sample 4 -->
-    <div class="sample-section"><div class="sample-title">Sample 4</div></div>
+    <div class="sample-section">
+      <div class="sample-title">Sample 4</div>
+      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
+    </div>
+
     <!-- Sample 5 -->
-    <div class="sample-section"><div class="sample-title">Sample 5</div></div>
+    <div class="sample-section">
+      <div class="sample-title">Sample 5</div>
+      <div class="snr-row"><div class="snr-title">SNR = -5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 0 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 5 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 10 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 15 dB</div><div class="model-grid"></div></div>
+      <div class="snr-row"><div class="snr-title">SNR = 20 dB</div><div class="model-grid"></div></div>
+    </div>
 
   </div>
 </body>
