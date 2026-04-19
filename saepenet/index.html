@@ -19,7 +19,16 @@ body {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding: 2rem 1rem;
 }
-
+  
+.spec-img {
+  transition: transform 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+.spec-img:hover {
+  transform: scale(1.8);
+  z-index: 999;
+}
 .container {
   max-width: 1600px;
   margin: auto;
@@ -209,6 +218,15 @@ samples.forEach((sample, sIdx) => {
 
   root.appendChild(section);
 });
+
+  // 音频互斥播放
+document.addEventListener('play', e => {
+  const audios = document.querySelectorAll('audio');
+  audios.forEach(a => {
+    if (a !== e.target) a.pause();
+  });
+}, true);
+  
 </script>
 
 </body>
