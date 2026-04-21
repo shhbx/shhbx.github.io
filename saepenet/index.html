@@ -29,6 +29,11 @@ body {
   transform: scale(2.6);
   z-index: 999;
 }
+
+.architecture img:hover {
+  transform: scale(1.4);
+  transition: 0.3s;
+}
 .container {
   max-width: 1600px;
   margin: auto;
@@ -150,6 +155,11 @@ The model adopts a magnitude-phase encoder-decoder architecture, where multichan
 Parallel decoders estimate clean magnitude and phase spectra at the reference channel, followed by inverse transformation to reconstruct clean speech. 
 Importantly, the phase decoding is spatial-aware, guided by inter-channel phase difference features and circular array spatial processing. 
 Experimental results demonstrate that SAPE-MSE outperforms representative multichannel speech enhancement methods, achieving superior PESQ performance on an eight-channel synthetic dataset.
+</div>
+
+<h2>Model Architecture</h2>
+<div class="architecture">
+  <img src="architecture.png">
 </div>
 
 <h2>Model Comparison</h2>
