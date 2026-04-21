@@ -34,6 +34,19 @@ body {
   transform: scale(1.4);
   transition: 0.3s;
 }
+
+.architecture {
+  text-align: center;
+  margin: 30px auto;
+}
+
+.architecture img {
+  width: 100%;        /* 关键：限制和container一样宽 */
+  max-width: 1200px;  /* 可选：再卡一个上限（更像论文figure） */
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
 .container {
   max-width: 1600px;
   margin: auto;
