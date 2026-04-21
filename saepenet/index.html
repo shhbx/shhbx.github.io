@@ -162,12 +162,13 @@ audio {
 
 <h2>Abstract</h2>
 <div class="abstract">
-Existing neural-network-based multichannel speech enhancement methods often rely on magnitude or real-imaginary modeling, but pay insufficient attention to explicit phase reconstruction and the effective exploitation of spatial information and geometric diversity of microphone arrays, which limits overall enhancement performance. 
-To address these issues, we propose a novel Multichannel Speech Enhancement model with Spatial-Aware Explicit Phase Estimation (SAPE-MSE). 
-The model adopts a magnitude-phase encoder-decoder architecture, where multichannel degraded magnitude and phase spectra are encoded and processed using improved time-frequency Transformers. 
-Parallel decoders estimate clean magnitude and phase spectra at the reference channel, followed by inverse transformation to reconstruct clean speech. 
-Importantly, the phase decoding is spatial-aware, guided by inter-channel phase difference features and circular array spatial processing. 
-Experimental results demonstrate that SAPE-MSE outperforms representative multichannel speech enhancement methods, achieving superior PESQ performance on an eight-channel synthetic dataset.
+Existing neural-network-based multichannel speech enhancement methods often rely on magnitude or real-imaginary modeling, but pay insufficient attention to explicit phase reconstruction and the effective exploitation of the spatial information and inherent geometric diversity of microphone arrays, which limits overall enhancement performance. 
+To address these issues, this paper proposes a novel Multichannel Speech Enhancement model with Spatial-Aware explicit Phase Estimation (SAPE-MSE). 
+The SAPE-MSE adopts a magnitude-phase encoder-decoder architecture.
+The encoder encodes the multichannel degraded magnitude and phase spectra, followed by deep processing with improved time-frequency Transformers. 
+Parallel decoders then estimate the clean magnitude and phase spectra at the reference channel, followed by inverse transformation to reconstruct the clean speech. 
+Importantly, the phase decoding is spatial-aware, guided by spatial cues from inter-channel phase difference features, and explicitly estimates the clean phase spectrum via circular array spatial processing and phase parallel estimation. 
+Experimental results demonstrate that SAPE-MSE outperforms representative multichannel speech enhancement methods on various metrics, achieving a PESQ score of 3.58 on a synthetic eight-channel dataset. 
 </div>
 
 <h2>Model Architecture</h2>
