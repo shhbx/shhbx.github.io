@@ -223,9 +223,8 @@ To address these issues, this paper proposes a novel Multichannel Speech Enhance
 The SAPE-MSE adopts a magnitude-phase encoder-decoder architecture.
 The encoder encodes the multichannel degraded magnitude and phase spectra, followed by deep processing with improved time-frequency Transformers. 
 Parallel decoders then estimate the clean magnitude and phase spectra at the reference channel, followed by inverse transformation to reconstruct the clean speech. 
-Importantly, the phase decoding branch is spatial-aware, guided by spatial cues from inter-channel phase difference features, and explicitly estimates the clean phase spectrum via circular array spatial processing and phase parallel estimation. 
+Importantly, the phase decoding is spatial-aware, guided by spatial cues from inter-channel phase difference features, and explicitly estimates the clean phase spectrum via circular array spatial processing and phase parallel estimation. 
 Experimental results demonstrate that SAPE-MSE outperforms representative multichannel speech enhancement methods on various metrics, achieving a PESQ score of 3.58 on a synthetic eight-channel dataset. 
-
 </div>
 
 <h2>Model Architecture</h2>
