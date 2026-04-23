@@ -12,6 +12,67 @@
   box-sizing: border-box;
 }
 
+.table-container {
+  overflow-x: auto;
+  margin-top: 40px;
+}
+
+.param-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;  /* 行间距（关键） */
+  font-size: 14px;
+}
+
+.param-table th {
+  background: #1e293b;
+  color: #fff;
+  padding: 12px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.param-table td {
+  background: #f8fafc;
+  padding: 12px;
+  vertical-align: middle;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.submodule {
+  border-left: 4px solid #3b82f6;
+  padding-left: 12px;
+  font-weight: 600;
+}
+
+.param-table tr td:last-child {
+  border-right: 1px solid #e2e8f0;
+}
+
+/* 模块分组标题 */
+.module-title {
+  background: #e0f2fe !important;
+  font-weight: 700;
+  text-align: left;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+/* shape 高亮 */
+.shape {
+  font-family: monospace;
+  background: #e2e8f0;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* 子模块说明 */
+.sub {
+  color: #475569;
+  font-size: 13px;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
   line-height: 1.7;
@@ -150,10 +211,10 @@ audio {
   Hong-Hao Sun, Yang Ai, Hui-Peng Du, Zhen-Hua Ling, and Wu Guo
 </div>
 
-<div class="links">
+<!-- <div class="links">
   <a href="#">Paper</a>
   <a href="#">Code</a>
-</div>
+</div> -->
 
 <h2>Abstract</h2>
 <div class="abstract">
@@ -171,11 +232,275 @@ Experimental results demonstrate that SAPE-MSE outperforms representative multic
   <img src="architecture-1.png">
 </div>
 
+<h2>Model Parameters</h2>
+
+<div class="table-container">
+<table class="param-table">
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Sub-module</th>
+      <th>Configuration</th>
+      <th>Input shape</th>
+      <th>Output shape</th>
+    </tr>
+  </thead>
+  <tbody>
+
+<!-- Encoder -->
+<tr>
+  <td rowspan="3" class="submodule"><b>Multichannel <br> Magnitude-Phase <br> Encoder</b></td>
+  <td class="submodule">Convolutional block 1</td>
+  <td class="submodule">
+    Conv2D (2M → C) → GN (g=8) → PReLU
+    (M =8, C = 64)
+  </td>
+  <td><span class="shape">[B, 2M, T, F]</span></td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+</tr>
+
+<tr>
+  <td class="submodule">Multi-scale Dilated DenseNet <br> (depth=4)</td>
+  <td class="submodule">
+    MTFAM → GN (g=8) → PReLU
+  </td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+</tr>
+
+<tr>
+  <td class="submodule">Convolutional block 2</td>
+  <td class="submodule">
+    Conv2D (C → C, k=(1×3), s=(1×2), p=(0,1)) → GN (g=8) → PReLU
+  </td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+</tr>
+
+<!-- MTFAM -->
+<tr>
+  <td rowspan="5" class="submodule"><b>MTFAM</b></td>
+
+  <td rowspan="4" class="submodule">Multi-scale Convolutional Block <br> (d=dilation rate)</td>
+
+  <td class="submodule">
+    Branch 1 (Global): <br>
+    &nbsp;&nbsp;Pad (1,1,d,0) <br>
+    &nbsp;&nbsp;Dilated Conv2D (Cin → C/2, k=(2×3), d=(d,1)) → GN (g=8) → PReLU
+  </td>
+  <td><span class="shape">[B, Cin, T, F]</span></td>
+  <td><span class="shape">[B, C/2, T, F]</span></td>
+</tr>
+
+<tr>
+  <td class="submodule">
+    Branch 2 (Time refinement): <br>
+    &nbsp;&nbsp;Concat (input, Global) → Pad (2,2,0,0) <br>
+    &nbsp;&nbsp;Conv2D ((Cin + C/2) → C/4, k=(1×5)) → GN (g=8) → PReLU
+  </td>
+  <td><span class="shape">[B, (Cin + C/2), T, F]</span></td>
+  <td><span class="shape">[B, C/4, T, F]</span></td>
+</tr>
+
+<tr>
+  <td class="submodule">
+    Branch 3 (Freq refinement): <br>
+    &nbsp;&nbsp;Concat (x, Global) → Pad (0,0,1,0) <br>
+    &nbsp;&nbsp;Conv2D ((Cin + C/2) → C/4, k=(2×1)) → GN (g=8) → PReLU
+  </td>
+  <td><span class="shape">[B, (Cin + C/2), T, F]</span></td>
+  <td><span class="shape">[B, C/4, T, F]</span></td>
+</tr>
+
+<tr>
+  <td class="submodule">
+    Fusion: <br>
+    &nbsp;&nbsp;Concat (Global, Time refinement, Freq refinement) → Conv2D (C → C)
+  </td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+</tr>
+
+<tr>
+  <td class="submodule">TF Coordinate Attention</td>
+  <td class="submodule">
+    Coord-Pooling: <br>
+    &nbsp;&nbsp;AvgPool-F → [B,C,T,1], AvgPool-T → [B,C,1,F].premute <br>
+    Concat (T+F) → Conv2D (C → C/4) → PReLU <br>
+    Split → Conv2D (C/4 → C) × 2 (T/F branches) <br>
+    Sigmoid <br>
+    Residual: x · (1 + at · af)
+  </td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+</tr>
+
+<!-- Improved TF-Transformer -->
+<tr>
+  <td rowspan="3" class="submodule"><b>Improved TF-Transformers <br> (depth=4) <br> </b></td>
+
+  <td class="submodule">Time Path</td>
+  <td class="submodule">
+    Reshape: [B, C, T, F] → [B·F, T, C] <br>
+    Improved GRU-Transformer Block (d=C, heads=4)
+  </td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+  <td><span class="shape">[B·F, T, C]</span></td>
+</tr>
+
+<tr>
+  <td class="submodule">Freq Path</td>
+  <td class="submodule">
+    Reshape: [B·F, T, C] → [B·T, F, C] <br>
+    Improved GRU-Transformer Block (d=C, heads=4)
+  </td>
+  <td><span class="shape">[B·F, T, C]</span></td>
+  <td><span class="shape">[B·T, F, C]</span></td>
+</tr>
+
+<tr>
+  <td class="submodule">Improved GRU-Transformer Block</td>
+  <td class="submodule">
+    FFN: <br>
+    &nbsp;&nbsp;RMSNorm → BiGRU (C → 2C, bidirectional) → SiLU → Linear (4C → C) <br>
+    &nbsp;&nbsp;+ Residual (×0.5) <br>
+    Multi-Head Attention: <br>
+    &nbsp;&nbsp;RMSNorm → MHA (heads=4) → Residual <br>
+    FFN: <br>
+    &nbsp;&nbsp;RMSNorm → BiGRU (C → 2C, bidirectional) → SiLU → Linear (4C → C) <br>
+    &nbsp;&nbsp;+ Residual (×0.5) <br>
+    RMSNorm
+  </td>
+  <td><span class="shape">[B, Seq, C]</span></td>
+  <td><span class="shape">[B, Seq, C]</span></td>
+</tr>
+
+<!-- Decoder -->
+<tr>
+  <td rowspan="9" class="submodule"><b>Decoder</b></td>
+  <td rowspan="4" class="submodule">Magnitude Mask Decoder <br> (d denotes the dilation rate) </td>
+  <td class="submodule">
+    Dilated DenseNet (depth=4) : <br>
+    &nbsp;&nbsp;Pad=(1,1,d,0)<br>
+    &nbsp;&nbsp;Conv2D(Cin → C, k=(2×3), d=(d,1)) → GN(g=8) → PReLU
+  </td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+</tr>
+<tr>
+  <td class="submodule">
+    TransposedConv2D (C → C, k=(1×3), r=2) → GN(g=8) → PReLU<br>
+  </td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+</tr>
+<tr>
+  <td class="submodule">
+    Conv2D (C → 1, k=(1×2)) → GN(g=8) → PReLU → Squeeze
+  </td>
+  <td><span class="shape">[B, 1, T, F]</span></td>
+  <td><span class="shape">[B, F, T]</span></td>
+</tr>
+<tr>
+  <td class="submodule">
+    Learnable Sigmoid2D
+  </td>
+  <td><span class="shape">[B, F, T]</span></td>
+  <td><span class="shape">[B, F, T]</span></td>
+</tr>
+
+<tr>
+  <td rowspan="5" class="submodule">Spatial-Aware Phase Decoder <br> (d denotes the dilation rate) </td>
+  <td class="submodule">
+    Circular Array Spatial Processor<br>
+  </td>
+  <td><span class="shape">[B, 2M, T, F]</span></td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+</tr>
+<tr>
+  <td class="submodule">
+    Dilated DenseNet (depth=4) : <br>
+    &nbsp;&nbsp;Pad=(1,1,d,0)<br>
+    &nbsp;&nbsp;Conv2D(Cin → C, k=(2×3), d=(d,1)) → GN(g=8) → PReLU
+  </td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+</tr>
+<tr>
+  <td class="submodule">
+    TransposedConv2D (C → C, k=(1×3), r=2) → GN(g=8) → PReLU
+  </td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+</tr>
+<tr>
+  <td class="submodule">
+    Phase Heads:<br>
+    &nbsp;&nbsp;Conv2D (C → 1, k=(1×2)) (Real) & Conv2D (C → 1, k=(1×2)) (Imag) → Squeeze
+  </td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+  <td><span class="shape">[B, T, F] ×2</span></td>
+</tr>
+<tr>
+  <td class="submodule">
+    Phase Reconstruction: atan2(Imag, Real)<br>
+  </td>
+  <td><span class="shape">[B, T, F] ×2</span></td>
+  <td><span class="shape">[B, T, F]</span></td>
+</tr>
+<!-- Circular Spatial Encoder -->
+<tr>
+  <td rowspan="5" class="submodule"><b>Circular Spatial Encoder</b></td>
+  <td class="submodule">Input Reshape & Stack</td>
+  <td class="submodule">
+    IPD: stack(sin, cos) → reshape [B·T·F, 2, M]<br>
+  </td>
+  <td><span class="shape">[B, 2M, T, F]</span></td>
+  <td><span class="shape">[B·T·F, 2, M]</span></td>
+</tr>
+<tr>
+  <td class="submodule">Multi-scale Circular Conv <br> (d denotes the dilation rate) </td>
+  <td class="submodule">
+    DilatedConv1D (2 → C, k=3, d=1) + circular padding + GN(4) + PReLU<br>
+    DilatedConv1D (2 → C, k=3, d=2) + circular padding + GN(4) + PReLU<br>
+    DilatedConv1D (2 → C, k=3, d=4) + circular padding + GN(4) + PReLU
+  </td>
+  <td><span class="shape">[B·T·F, 2, M]</span></td>
+  <td><span class="shape">[B·T·F, 3C, M]</span></td>
+</tr>
+<tr>
+  <td class="submodule">Feature Fusion</td>
+  <td class="submodule">
+    Concat → Conv1D(3C → 4C) → PReLU
+  </td>
+  <td><span class="shape">[B·T·F, 3C, M]</span></td>
+  <td><span class="shape">[B·T·F, 4C, M]</span></td>
+</tr>
+<tr>
+  <td class="submodule">Global Mapping</td>
+  <td class="submodule">
+    Flatten → Linear(4C·M → C)
+  </td>
+  <td><span class="shape">[B·T·F, 4C·M]</span></td>
+  <td><span class="shape">[B·T·F, C]</span></td>
+</tr>
+<tr>
+  <td class="submodule">Reshape + Downsample</td>
+  <td class="submodule">
+    Reshape → [B, C, T, F]<br>
+    Conv2D(C→C, k=(1×3), s=(1×2), p=(0,1)) → GN(8) → PReLU
+  </td>
+  <td><span class="shape">[B, C, T, F]</span></td>
+  <td><span class="shape">[B, C, T, F/2]</span></td>
+</tr>
+
+  </tbody>
+</table>
+</div>
+
 <h2>Model Comparison</h2>
 
-<!-- 自动生成 -->
 <div id="samples"></div>
-
 </div>
 
 <script>
