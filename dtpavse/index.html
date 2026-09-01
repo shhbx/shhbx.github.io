@@ -97,6 +97,19 @@
       text-align: justify;
     }
 
+    .architecture-section {
+      padding: 34px clamp(22px, 5vw, 72px) 40px;
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .architecture-image {
+      display: block;
+      width: min(100%, 1280px);
+      height: auto;
+      margin: 20px auto 0;
+    }
+
     .comparison-heading {
       padding: 34px 24px 20px;
       text-align: center;
@@ -326,14 +339,29 @@
     <section class="intro" aria-labelledby="abstract-title">
       <h2 id="abstract-title">Abstract</h2>
       <p class="abstract">
-This paper proposes DTP-AVSE, a framework for Audio-Visual Speech Enhancement via Discrete neural codec Token Prediction. In DTP-AVSE, an audio conditioning branch first derives an acoustic representation from degraded speech, while a pretrained AV-HuBERT extracts a contextual audio-visual representation from degraded speech and synchronized lip video. Next, local cross-attention aligns the audio-visual representation with the acoustic time grid, enabling its fusion with the acoustic representation to form a multimodal condition. Finally, codebook-specific predictors use this condition to progressively recover clean codec tokens along the residual vector quantization (RVQ) hierarchy. The predicted tokens are then decoded by the neural codec to reconstruct the enhanced speech. Experiments under noise-only and reverberant-noisy conditions at low SNRs
-ranging from -10 to 0 dB show that DTP-AVSE outperforms representative
-audio-only and audio-visual baselines across most evaluation metrics,
-achieving the highest NISQA, DNSMOS, and UTMOS scores and superior content
-fidelity. Ablation studies
-further verify the effectiveness of visual conditioning and local
-cross-attention.
+        This paper proposes DTP-AVSE, a framework for Audio-Visual Speech Enhancement via Discrete neural codec
+        Token Prediction. In DTP-AVSE, an audio conditioning branch first derives an acoustic representation from
+        degraded speech, while a pretrained AV-HuBERT extracts a contextual audio-visual representation from
+        degraded speech and synchronized lip video. Next, local cross-attention aligns the audio-visual
+        representation with the acoustic time grid, enabling its fusion with the acoustic representation to form a
+        multimodal condition. Finally, codebook-specific predictors use this condition to progressively recover
+        clean codec tokens along the residual vector quantization (RVQ) hierarchy. The predicted tokens are then
+        decoded by the neural codec to reconstruct the enhanced speech. Experiments under noise-only and
+        reverberant-noisy conditions at low SNRs ranging from -10 to 0 dB show that DTP-AVSE outperforms
+        representative audio-only and audio-visual baselines across most evaluation metrics, achieving the highest
+        NISQA, DNSMOS, and UTMOS scores and superior content fidelity. Ablation studies further verify the
+        effectiveness of visual conditioning and local cross-attention.
       </p>
+    </section>
+
+    <section class="architecture-section" aria-labelledby="architecture-title">
+      <h2 id="architecture-title">Model Architecture</h2>
+      <img
+        class="architecture-image"
+        src="assets/architecture.png"
+        alt="Architecture of the proposed DTP-AVSE system"
+        decoding="async"
+      >
     </section>
 
     <section class="comparison-heading" aria-labelledby="comparison-title">
@@ -463,4 +491,3 @@ cross-attention.
   </script>
 </body>
 </html>
-
