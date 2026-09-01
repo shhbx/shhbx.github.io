@@ -231,6 +231,27 @@ Experimental results on a synthetic eight-channel dataset show that SAPE-MSE ach
         <!-- <a href="#" class="code">GitHub Code</a> -->
       </div>
     </div>
+    <div class="paper-card">
+      <div class="title">DTP-AVSE: Audio-Visual Speech Enhancement via Discrete Neural Codec Token Prediction</div>
+      <div class="authors">Hong-Hao Sun, Yang Ai$^*$, Fei Liu, Hui-Peng Du, Zhen-Hua Ling, Wu Guo</div>
+      <div class="venue">
+This paper proposes DTP-AVSE, a framework for Audio-Visual Speech Enhancement via Discrete neural codec \textbf{T}oken \textbf{P}rediction. In DTP-AVSE, an audio conditioning branch first derives an acoustic representation from degraded speech, while a pretrained AV-HuBERT extracts a contextual audio-visual representation from degraded speech and synchronized lip video. Next, local cross-attention aligns the audio-visual representation with the acoustic time grid, enabling its fusion with the acoustic representation to form a multimodal condition. Finally, codebook-specific predictors use this condition to progressively recover clean codec tokens along the residual vector quantization (RVQ) hierarchy. The predicted tokens are then decoded by the neural codec to reconstruct the enhanced speech. Experiments under noise-only and reverberant-noisy conditions at low SNRs
+ranging from -10 to 0 dB show that DTP-AVSE outperforms representative
+audio-only and audio-visual baselines across most evaluation metrics,
+achieving the highest NISQA, DNSMOS, and UTMOS scores and superior content
+fidelity. Ablation studies
+further verify the effectiveness of visual conditioning and local
+cross-attention.
+      </div>
+      
+      <div class="paper-submit">Submitted to IEEE ICASSP 2027</div>
+
+      <div class="paper-links">
+        <a href="dtpavse/" class="project">Project Page</a>
+        <a href="#" class="paper">Paper PDF</a>
+        <!-- <a href="#" class="code">GitHub Code</a> -->
+      </div>
+    </div>
   </div>
 </div>
 
