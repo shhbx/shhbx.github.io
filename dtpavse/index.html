@@ -326,12 +326,13 @@
     <section class="intro" aria-labelledby="abstract-title">
       <h2 id="abstract-title">Abstract</h2>
       <p class="abstract">
-        DTP-AVSE is an audio-visual speech enhancement framework based on discrete neural codec token prediction.
-        It encodes degraded speech into codec latents and extracts synchronized audio-visual representations with
-        a pretrained AV-HuBERT encoder. Local cross-attention aligns the audio-visual representation with the codec
-        sequence, and the resulting condition guides codebook-wise prediction of clean neural codec tokens along
-        the residual vector quantization hierarchy. The samples below compare DTP-AVSE with audio-only and
-        audio-visual enhancement baselines under noise-only and noise-plus-reverberation conditions.
+This paper proposes DTP-AVSE, a framework for Audio-Visual Speech Enhancement via Discrete neural codec Token Prediction. In DTP-AVSE, an audio conditioning branch first derives an acoustic representation from degraded speech, while a pretrained AV-HuBERT extracts a contextual audio-visual representation from degraded speech and synchronized lip video. Next, local cross-attention aligns the audio-visual representation with the acoustic time grid, enabling its fusion with the acoustic representation to form a multimodal condition. Finally, codebook-specific predictors use this condition to progressively recover clean codec tokens along the residual vector quantization (RVQ) hierarchy. The predicted tokens are then decoded by the neural codec to reconstruct the enhanced speech. Experiments under noise-only and reverberant-noisy conditions at low SNRs
+ranging from -10 to 0 dB show that DTP-AVSE outperforms representative
+audio-only and audio-visual baselines across most evaluation metrics,
+achieving the highest NISQA, DNSMOS, and UTMOS scores and superior content
+fidelity. Ablation studies
+further verify the effectiveness of visual conditioning and local
+cross-attention.
       </p>
     </section>
 
